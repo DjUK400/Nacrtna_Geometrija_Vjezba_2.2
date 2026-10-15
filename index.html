@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="bs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Ortogonalna projekcija O5</title>
+<style>/* Layout: mm-paper sheet with step chips on top and a caption below, results list under it. */
+:root{color-scheme:light;--bg:#EEF2F3;--sheet:#FBFCFC;--ink:#1B2830;--muted:#56666E;--grid:#DDE6E9;--rule:#C5D1D6;--c-a:#2B7BD0;--c-r:#7467D6;--c-m:#1D9E75;--c-v:#B86F10;--c-b:#5A9418;--c-c:#D4572B;--chip:#1B2830;--on-chip:#FBFCFC;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10171A;--sheet:#161E22;--ink:#E7EEF1;--muted:#9BABB3;--grid:#222E34;--rule:#2C3A41;--c-a:#5DA3EA;--c-r:#9D93F2;--c-m:#3FC49A;--c-v:#E3A247;--c-b:#8EC44C;--c-c:#F2825D;--chip:#E7EEF1;--on-chip:#161E22;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10171A;--sheet:#161E22;--ink:#E7EEF1;--muted:#9BABB3;--grid:#222E34;--rule:#2C3A41;--c-a:#5DA3EA;--c-r:#9D93F2;--c-m:#3FC49A;--c-v:#E3A247;--c-b:#8EC44C;--c-c:#F2825D;--chip:#E7EEF1;--on-chip:#161E22;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans);-webkit-text-size-adjust:100%}
+.page{max-width:720px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+h1{font:600 28px/1.15 var(--serif);margin:0 0 10px;text-wrap:balance}
+.lede{margin:0 0 18px;color:var(--muted);max-width:60ch}
+.sheet{position:relative;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.sr{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.bar{display:flex;gap:3px;padding:8px;border-bottom:1px solid var(--rule)}
+.bar label{flex:1 1 0;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--rule);border-radius:4px;background:var(--sheet);color:var(--ink);font:600 15px var(--sans);cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+.stage{display:block;width:100%;max-width:540px;height:auto;margin:0 auto}
+.grid{fill:none;stroke:var(--grid);stroke-width:.6}
+.ax{stroke:var(--ink);stroke-width:.9;stroke-linecap:round}
+.bis{stroke:var(--muted);stroke-width:.8;stroke-dasharray:8 3 2 3}
+.k{display:none;fill:none;stroke:var(--muted);stroke-width:.8;stroke-dasharray:3 3}
+.ln{fill:none;stroke:var(--c);stroke-linecap:round}
+.dot{fill:var(--c)}
+.dot.h{fill:var(--sheet);stroke:var(--c);stroke-width:1.4}
+.lb{font:italic 13px var(--serif);fill:var(--ink)}
+.lb.up{font-style:normal}
+.dash{stroke-dasharray:5 4}
+.cap{display:none;margin:0;padding:12px 14px 14px;border-top:1px solid var(--rule);font-size:15px;line-height:1.5}
+.res{margin-top:32px}
+.res h2{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.res dl{display:grid;grid-template-columns:1.6rem minmax(0,1fr);gap:14px 8px;margin:0}
+.res dt{font:italic 600 17px/1.4 var(--serif)}
+.res dd{margin:0;min-width:0}
+.q{display:block;font-size:13px;line-height:1.4;color:var(--muted)}
+.r{display:block;font-variant-numeric:tabular-nums}
+.nw{white-space:nowrap}
+.note{margin:24px 0 0;font-size:13px;line-height:1.5;color:var(--muted);max-width:62ch}
+@media (min-width:600px){.bar label{font-size:16px}.lb{font-size:13px}}
+.k{display:none}
+#k1:checked~.stage .k.s1{display:inline}
+#k1:checked~.stage .s2{display:none}
+#k1:checked~.stage .s3{display:none}
+#k1:checked~.stage .s4{display:none}
+#k1:checked~.stage .s5{display:none}
+#k1:checked~.stage .s6{display:none}
+#k1:checked~.stage .s7{display:none}
+#k1:checked~.stage .s8{display:none}
+#k1:checked~.stage .e:not(.s0):not(.s1):not(.keep){opacity:.28}
+#k2:checked~.stage .k.s2{display:inline}
+#k2:checked~.stage .s3{display:none}
+#k2:checked~.stage .s4{display:none}
+#k2:checked~.stage .s5{display:none}
+#k2:checked~.stage .s6{display:none}
+#k2:checked~.stage .s7{display:none}
+#k2:checked~.stage .s8{display:none}
+#k2:checked~.stage .e:not(.s0):not(.s2):not(.keep){opacity:.28}
+#k3:checked~.stage .k.s3{display:inline}
+#k3:checked~.stage .s4{display:none}
+#k3:checked~.stage .s5{display:none}
+#k3:checked~.stage .s6{display:none}
+#k3:checked~.stage .s7{display:none}
+#k3:checked~.stage .s8{display:none}
+#k3:checked~.stage .e:not(.s0):not(.s3):not(.keep){opacity:.28}
+#k4:checked~.stage .k.s4{display:inline}
+#k4:checked~.stage .s5{display:none}
+#k4:checked~.stage .s6{display:none}
+#k4:checked~.stage .s7{display:none}
+#k4:checked~.stage .s8{display:none}
+#k4:checked~.stage .e:not(.s0):not(.s4):not(.keep){opacity:.28}
+#k5:checked~.stage .k.s5{display:inline}
+#k5:checked~.stage .s6{display:none}
+#k5:checked~.stage .s7{display:none}
+#k5:checked~.stage .s8{display:none}
+#k5:checked~.stage .e:not(.s0):not(.s5):not(.keep){opacity:.28}
+#k6:checked~.stage .k.s6{display:inline}
+#k6:checked~.stage .s7{display:none}
+#k6:checked~.stage .s8{display:none}
+#k6:checked~.stage .e:not(.s0):not(.s6):not(.keep){opacity:.28}
+#k7:checked~.stage .k.s7{display:inline}
+#k7:checked~.stage .s8{display:none}
+#k7:checked~.stage .e:not(.s0):not(.s7):not(.keep){opacity:.28}
+#k8:checked~.stage .k.s8{display:inline}
+#k8:checked~.stage .e:not(.s0):not(.s8):not(.keep){opacity:.28}
+#k1:checked~.cap1{display:block}
+#k1:checked~.bar label[for=k1]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k1:focus-visible~.bar label[for=k1]{outline:2px solid var(--ink);outline-offset:2px}
+#k2:checked~.cap2{display:block}
+#k2:checked~.bar label[for=k2]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k2:focus-visible~.bar label[for=k2]{outline:2px solid var(--ink);outline-offset:2px}
+#k3:checked~.cap3{display:block}
+#k3:checked~.bar label[for=k3]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k3:focus-visible~.bar label[for=k3]{outline:2px solid var(--ink);outline-offset:2px}
+#k4:checked~.cap4{display:block}
+#k4:checked~.bar label[for=k4]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k4:focus-visible~.bar label[for=k4]{outline:2px solid var(--ink);outline-offset:2px}
+#k5:checked~.cap5{display:block}
+#k5:checked~.bar label[for=k5]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k5:focus-visible~.bar label[for=k5]{outline:2px solid var(--ink);outline-offset:2px}
+#k6:checked~.cap6{display:block}
+#k6:checked~.bar label[for=k6]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k6:focus-visible~.bar label[for=k6]{outline:2px solid var(--ink);outline-offset:2px}
+#k7:checked~.cap7{display:block}
+#k7:checked~.bar label[for=k7]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k7:focus-visible~.bar label[for=k7]{outline:2px solid var(--ink);outline-offset:2px}
+#k8:checked~.cap8{display:block}
+#k8:checked~.bar label[for=k8]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k8:focus-visible~.bar label[for=k8]{outline:2px solid var(--ink);outline-offset:2px}
+#k9:checked~.cap9{display:block}
+#k9:checked~.bar label[for=k9]{background:var(--chip);color:var(--on-chip);border-color:var(--chip)}
+#k9:focus-visible~.bar label[for=k9]{outline:2px solid var(--ink);outline-offset:2px}
+#k8:checked~.stage .abase,#k9:checked~.stage .abase{display:none}
+</style>
+</head>
+<body>
+<main class="page"><p class="eyebrow">O₅ (18; 16)</p><h1>Ortogonalna projekcija</h1><p class="lede">Kroz tačku A(3; 4; 4) ucrtane su prave a, b i c u sve tri projekcije. Izaberi korak a) do h) i vidi konstrukciju, ili Sve za gotov crtež.</p><div class="sheet"><input class="sr" type="radio" name="korak" id="k1"><input class="sr" type="radio" name="korak" id="k2"><input class="sr" type="radio" name="korak" id="k3"><input class="sr" type="radio" name="korak" id="k4"><input class="sr" type="radio" name="korak" id="k5"><input class="sr" type="radio" name="korak" id="k6"><input class="sr" type="radio" name="korak" id="k7"><input class="sr" type="radio" name="korak" id="k8"><input class="sr" type="radio" name="korak" id="k9" checked><div class="bar"><label for="k1">a)</label><label for="k2">b)</label><label for="k3">c)</label><label for="k4">d)</label><label for="k5">e)</label><label for="k6">f)</label><label for="k7">g)</label><label for="k8">h)</label><label for="k9">Sve</label></div><svg class="stage" viewBox="0 0 380 444" role="img" aria-labelledby="svt svd"><title id="svt">Ortogonalna projekcija zadatka O5</title><desc id="svd">Prva, druga i treća projekcija prave a kroz A(3; 4; 4), njeni prodori, uglovi, tačke M i N, dio u V oktantu te prave b i c.</desc><path class="grid" d="M24.5 0V444M51.0 0V444M77.5 0V444M104.0 0V444M130.5 0V444M157.0 0V444M183.5 0V444M210.0 0V444M236.5 0V444M263.0 0V444M289.5 0V444M316.0 0V444M342.5 0V444M369.0 0V444M0 443.0H380M0 416.5H380M0 390.0H380M0 363.5H380M0 337.0H380M0 310.5H380M0 284.0H380M0 257.5H380M0 231.0H380M0 204.5H380M0 178.0H380M0 151.5H380M0 125.0H380M0 98.5H380M0 72.0H380M0 45.5H380M0 19.0H380"/><g><line class="e ax s0" x1="19.2" y1="231.0" x2="358.4" y2="231.0"/><line class="e ax s0" x1="210.0" y1="432.4" x2="210.0" y2="16.4"/><line class="e bis s0" x1="80.1" y1="360.9" x2="278.9" y2="162.1"/><line class="e k s1" x1="289.5" y1="337.0" x2="289.5" y2="125.0"/><line class="e k s1" x1="289.5" y1="125.0" x2="104.0" y2="125.0"/><line class="e k s1" x1="289.5" y1="337.0" x2="104.0" y2="337.0"/><line class="e k s1" x1="104.0" y1="337.0" x2="104.0" y2="125.0"/><line class="e k s1" x1="157.0" y1="231.0" x2="157.0" y2="204.5"/><line class="e k s1" x1="157.0" y1="204.5" x2="210.0" y2="204.5"/><line class="e ln s1 keep abase" style="--c:var(--c-a);stroke-width:1.6" x1="51.0" y1="146.2" x2="318.6" y2="360.3"/><line class="e ln s1 keep abase" style="--c:var(--c-a);stroke-width:1.6" x1="51.0" y1="268.1" x2="318.6" y2="107.5"/><line class="e ln s1 keep abase" style="--c:var(--c-a);stroke-width:1.6" x1="294.8" y1="268.1" x2="80.7" y2="107.5"/><line class="e k s2" x1="112.8" y1="231.0" x2="112.8" y2="195.7"/><line class="e k s2" x1="210.0" y1="172.7" x2="167.6" y2="172.7"/><line class="e k s3" x1="289.5" y1="337.0" x2="223.3" y2="419.8"/><line class="e k s3" x1="289.5" y1="125.0" x2="235.0" y2="34.1"/><line class="e ln s3" style="--c:var(--c-r);stroke-width:1.2" x1="112.8" y1="195.7" x2="223.3" y2="419.8"/><line class="e ln s3" style="--c:var(--c-r);stroke-width:1.2" x1="157.0" y1="204.5" x2="235.0" y2="34.1"/><path class="e ln s3" style="--c:var(--c-r);stroke-width:1.2" d="M123.4 217.1A23.9 23.9 0 0 0 131.5 210.6"/><path class="e ln s3" style="--c:var(--c-r);stroke-width:1.2" d="M196.8 180.6A46.4 46.4 0 0 0 176.3 162.3"/><line class="e k s4" x1="210.0" y1="231.0" x2="313.7" y2="110.5"/><path class="e k s4" d="M324.4 120.5A159.0 159.0 0 0 0 301.2 100.8"/><path class="e k s4" d="M51.9 247.6A159.0 159.0 0 0 0 59.7 282.8"/><line class="e k s4" x1="54.9" y1="265.8" x2="54.9" y2="149.3"/><line class="e k s4" x1="54.9" y1="265.8" x2="291.7" y2="265.8"/><line class="e k s4" x1="313.7" y1="110.5" x2="313.7" y2="356.4"/><line class="e k s4" x1="313.7" y1="110.5" x2="84.6" y2="110.5"/><line class="e ln s5" style="--c:var(--c-v);stroke-width:3.2" x1="157.0" y1="231.0" x2="210.0" y2="273.4"/><line class="e ln s5" style="--c:var(--c-v);stroke-width:3.2" x1="157.0" y1="204.5" x2="210.0" y2="172.7"/><line class="e ln s5" style="--c:var(--c-v);stroke-width:3.2" x1="210.0" y1="204.5" x2="167.6" y2="172.7"/><line class="e ln s5" style="--c:var(--c-v);stroke-width:3.2" x1="140.4" y1="251.7" x2="173.6" y2="318.9"/><line class="e k s5" x1="157.0" y1="231.0" x2="140.4" y2="251.7"/><line class="e k s5" x1="210.0" y1="273.4" x2="173.6" y2="318.9"/><line class="e ln s6" style="--c:var(--c-b);stroke-width:1.5" x1="183.5" y1="146.2" x2="329.2" y2="262.8"/><line class="e ln s6" style="--c:var(--c-b);stroke-width:1.5" x1="183.5" y1="294.6" x2="329.2" y2="207.2"/><line class="e ln s6" style="--c:var(--c-b);stroke-width:1.5" x1="294.8" y1="294.6" x2="178.2" y2="207.2"/><line class="e ln s7" style="--c:var(--c-c);stroke-width:1.5" x1="31.9" y1="149.3" x2="132.9" y2="149.3"/><line class="e ln s7" style="--c:var(--c-c);stroke-width:1.5" x1="31.9" y1="252.5" x2="132.9" y2="310.8"/><line class="e ln s7" style="--c:var(--c-c);stroke-width:1.5" x1="291.7" y1="252.5" x2="291.7" y2="310.8"/><line class="e ln s7" style="--c:var(--c-c);stroke-width:0.8" x1="54.9" y1="265.8" x2="97.3" y2="265.8"/><path class="e ln s7" style="--c:var(--c-c);stroke-width:1.2" d="M77.8 279.0A26.5 26.5 0 0 0 81.4 265.8"/><line class="e ln s8 keep" style="--c:var(--c-a);stroke-width:2" x1="112.8" y1="195.7" x2="318.6" y2="360.3"/><line class="e ln s8 keep dash" style="--c:var(--c-a);stroke-width:2" x1="51.0" y1="146.2" x2="112.8" y2="195.7"/><line class="e ln s8 keep" style="--c:var(--c-a);stroke-width:2" x1="157.0" y1="204.5" x2="318.6" y2="107.5"/><line class="e ln s8 keep dash" style="--c:var(--c-a);stroke-width:2" x1="51.0" y1="268.1" x2="157.0" y2="204.5"/><line class="e ln s8 keep" style="--c:var(--c-a);stroke-width:2" x1="167.6" y1="172.7" x2="80.7" y2="107.5"/><line class="e ln s8 keep dash" style="--c:var(--c-a);stroke-width:2" x1="294.8" y1="268.1" x2="167.6" y2="172.7"/></g><g><circle class="e dot s0" style="--c:var(--ink)" cx="289.5" cy="337.0" r="2.6"/><circle class="e dot s0" style="--c:var(--ink)" cx="289.5" cy="125.0" r="2.6"/><circle class="e dot s0" style="--c:var(--ink)" cx="104.0" cy="125.0" r="2.6"/><circle class="e dot h s1 keep" style="--c:var(--c-a)" cx="157.0" cy="231.0" r="3"/><circle class="e dot h s1 keep" style="--c:var(--c-a)" cx="157.0" cy="204.5" r="3"/><circle class="e dot h s1 keep" style="--c:var(--c-a)" cx="210.0" cy="204.5" r="3"/><circle class="e dot h s2" style="--c:var(--c-a)" cx="112.8" cy="195.7" r="3"/><circle class="e dot h s2" style="--c:var(--c-a)" cx="112.8" cy="231.0" r="3"/><circle class="e dot h s2" style="--c:var(--c-a)" cx="245.3" cy="231.0" r="3"/><circle class="e dot h s2" style="--c:var(--c-a)" cx="210.0" cy="273.4" r="3"/><circle class="e dot h s2" style="--c:var(--c-a)" cx="210.0" cy="172.7" r="3"/><circle class="e dot h s2" style="--c:var(--c-a)" cx="167.6" cy="172.7" r="3"/><circle class="e dot s3" style="--c:var(--c-r)" cx="223.3" cy="419.8" r="2.6"/><circle class="e dot s3" style="--c:var(--c-r)" cx="235.0" cy="34.1" r="2.6"/><circle class="e dot s4" style="--c:var(--c-m)" cx="54.9" cy="149.3" r="2.6"/><circle class="e dot s4" style="--c:var(--c-m)" cx="54.9" cy="265.8" r="2.6"/><circle class="e dot s4" style="--c:var(--c-m)" cx="291.7" cy="265.8" r="2.6"/><circle class="e dot s4" style="--c:var(--c-m)" cx="313.7" cy="356.4" r="2.6"/><circle class="e dot s4" style="--c:var(--c-m)" cx="313.7" cy="110.5" r="2.6"/><circle class="e dot s4" style="--c:var(--c-m)" cx="84.6" cy="110.5" r="2.6"/><circle class="e dot s5" style="--c:var(--c-v)" cx="140.4" cy="251.7" r="2.6"/><circle class="e dot s5" style="--c:var(--c-v)" cx="173.6" cy="318.9" r="2.6"/><circle class="e dot s6" style="--c:var(--c-b)" cx="289.5" cy="231.0" r="2.6"/></g><g><text class="e lb s0" x="294" y="328" text-anchor="start" dominant-baseline="central">A′</text><text class="e lb s0" x="295" y="135" text-anchor="start" dominant-baseline="central">A″</text><text class="e lb s0" x="98" y="138" text-anchor="end" dominant-baseline="central">A‴</text><text class="e lb s0" x="363" y="231" text-anchor="start" dominant-baseline="central">x</text><text class="e lb s0" x="19" y="222" text-anchor="start" dominant-baseline="central">y</text><text class="e lb s0" x="216" y="22" text-anchor="start" dominant-baseline="central">z</text><text class="e lb s0" x="216" y="428" text-anchor="start" dominant-baseline="central">y</text><text class="e lb s1 keep" x="242" y="287" text-anchor="start" dominant-baseline="central">a′</text><text class="e lb s1 keep" x="243" y="133" text-anchor="start" dominant-baseline="central">a″</text><text class="e lb s1 keep" x="141" y="141" text-anchor="start" dominant-baseline="central">a‴</text><text class="e lb s1 keep" x="161" y="222" text-anchor="start" dominant-baseline="central">P₂′</text><text class="e lb s1 keep" x="152" y="197" text-anchor="end" dominant-baseline="central">P₂″</text><text class="e lb s1 keep" x="216" y="198" text-anchor="start" dominant-baseline="central">P₂‴</text><text class="e lb s2" x="107" y="208" text-anchor="end" dominant-baseline="central">P₁′</text><text class="e lb s2" x="115" y="245" text-anchor="start" dominant-baseline="central">P₁″</text><text class="e lb s2" x="249" y="222" text-anchor="start" dominant-baseline="central">P₁‴</text><text class="e lb s2" x="216" y="258" text-anchor="start" dominant-baseline="central">P₃′</text><text class="e lb s2" x="216" y="181" text-anchor="start" dominant-baseline="central">P₃″</text><text class="e lb s2" x="162" y="181.5" text-anchor="end" dominant-baseline="central">P₃‴</text><text class="e lb s3" x="228" y="426" text-anchor="start" dominant-baseline="central">A°</text><text class="e lb s3" x="241" y="34" text-anchor="start" dominant-baseline="central">A°</text><text class="e lb s3" x="134" y="222" text-anchor="middle" dominant-baseline="central">α</text><text class="e lb s3" x="193" y="164" text-anchor="middle" dominant-baseline="central">β</text><text class="e lb s4" x="59" y="139" text-anchor="start" dominant-baseline="central">M′</text><text class="e lb s4" x="47" y="270" text-anchor="end" dominant-baseline="central">M″</text><text class="e lb s4" x="296" y="276" text-anchor="start" dominant-baseline="central">M‴</text><text class="e lb s4" x="310" y="368" text-anchor="end" dominant-baseline="central">N′</text><text class="e lb s4" x="318" y="98" text-anchor="start" dominant-baseline="central">N″</text><text class="e lb s4" x="79" y="121" text-anchor="end" dominant-baseline="central">N‴</text><text class="e lb s5" x="133" y="262" text-anchor="end" dominant-baseline="central">P₂°</text><text class="e lb s5" x="167" y="319" text-anchor="end" dominant-baseline="central">P₃°</text><text class="e lb s5 up" x="140" y="289" text-anchor="end" dominant-baseline="central">2,83</text><text class="e lb s6" x="333" y="266" text-anchor="start" dominant-baseline="central">b′</text><text class="e lb s6" x="333" y="205" text-anchor="start" dominant-baseline="central">b″</text><text class="e lb s6" x="299" y="300" text-anchor="start" dominant-baseline="central">b‴</text><text class="e lb s6" x="289.5" y="205" text-anchor="middle" dominant-baseline="central">B′=B″</text><text class="e lb s7" x="22" y="141" text-anchor="start" dominant-baseline="central">c′</text><text class="e lb s7" x="30" y="246" text-anchor="start" dominant-baseline="central">c″</text><text class="e lb s7" x="287" y="306" text-anchor="end" dominant-baseline="central">c‴</text><text class="e lb s7 up" x="101" y="277" text-anchor="middle" dominant-baseline="central">30°</text></g></svg><p class="cap cap1">a) Prava a kroz A(3; 4; 4) i prodor na frontalnici P₂(−2; 0; 1).</p><p class="cap cap2">b) Prodori: P₁(−3,67; −1,33; 0), P₂(−2; 0; 1), P₃(0; 1,6; 2,2).</p><p class="cap cap3">c) Obaranjem: α ≈ 25,1° sa π₁ (u 1. projekciji), β ≈ 34,4° sa π₂ (u 2. projekciji).</p><p class="cap cap4">d) y osa je u 2. projekciji tačka O, pa M″ i N″ leže na kružnici r = 6 oko O. M(−5,85; −3,08; −1,31), N(3,91; 4,73; 4,55).</p><p class="cap cap5">e) V oktant (x < 0, y > 0, z > 0): dio P₂P₃. Prava veličina 2√2 ≈ 2,83 cm.</p><p class="cap cap6">f) b ∥ a kroz B(3; 0; 0): sve tri projekcije paralelne su sa projekcijama prave a.</p><p class="cap cap7">g) c ∥ π₂ kroz M: c′ ∥ x, c‴ ∥ z, a c″ je pod 30° prema x osi (ovdje −30°).</p><p class="cap cap8">h) Vidljivost prave a: a′ je vidljiva za z > 0 (od P₁′ prema A′), a″ za y > 0 (od P₂″ prema A″), a‴ za x > 0 (od P₃‴ prema A‴). Isprekidani dijelovi su nevidljivi.</p><p class="cap cap9">Sva rješenja zajedno. Izaberi slovo koraka da vidiš njegovu konstrukciju.</p></div><section class="res" aria-labelledby="rez"><h2 id="rez">Rezultati</h2><dl><dt>a)</dt><dd><span class="q">Prava a kroz A, sa prodorom na frontalnici</span><span class="r"><span class="nw">A(3; 4; 4)</span>, <span class="nw">P₂(−2; 0; 1)</span></span></dd><dt>b)</dt><dd><span class="q">Prodori kroz projekcijske ravni</span><span class="r"><span class="nw">P₁(−3,67; −1,33; 0)</span>, <span class="nw">P₂(−2; 0; 1)</span>, <span class="nw">P₃(0; 1,6; 2,2)</span></span></dd><dt>c)</dt><dd><span class="q">Uglovi sa horizontalnicom i frontalnicom</span><span class="r"><span class="nw">α ≈ 25,1°</span>, <span class="nw">β ≈ 34,4°</span></span></dd><dt>d)</dt><dd><span class="q">Tačke M i N, 6 cm od y ose</span><span class="r"><span class="nw">M(−5,85; −3,08; −1,31)</span>, <span class="nw">N(3,91; 4,73; 4,55)</span></span></dd><dt>e)</dt><dd><span class="q">Dio prave u V oktantu</span><span class="r"><span class="nw">dio P₂P₃</span>, <span class="nw">dužine 2√2 ≈ 2,83 cm</span></span></dd><dt>f)</dt><dd><span class="q">Prava b ∥ a, siječe x osu na odsječku 3</span><span class="r"><span class="nw">B(3; 0; 0)</span></span></dd><dt>g)</dt><dd><span class="q">Prava c kroz M, ∥ frontalnici, 30° prema horizontalnici</span><span class="r"><span class="nw">c′ ∥ x</span>, <span class="nw">c‴ ∥ z</span>, <span class="nw">c″ pod −30° (ili +30°)</span></span></dd><dt>h)</dt><dd><span class="q">Vidljivost projekcija prave a</span><span class="r"><span class="nw">a′ od P₁′ prema A′</span>, <span class="nw">a″ od P₂″ prema A″</span>, <span class="nw">a‴ od P₃‴ prema A‴</span></span></dd></dl><p class="note">Dogovor crteža: x osa ide udesno, treća projekcija je lijevo od z ose, a V oktant je x &lt; 0, y &gt; 0, z &gt; 0. Druga mogućnost za c″ je nagib +30°, jer zadatak ne određuje smjer. Vidljivost: prva projekcija se gleda odozgo (vidljivo je z > 0), druga sprijeda (y > 0), a treća sa strane x > 0.</p></section></main>
+</body>
+</html>
